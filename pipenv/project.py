@@ -42,6 +42,7 @@ from pipenv.utils.shell import (
 from pipenv.utils.toml import cleanup_toml, convert_toml_outline_tables
 from pipenv.vendor import plette, toml, tomlkit, vistir
 from pipenv.vendor.requirementslib.models.utils import get_default_pyproject_backend
+from sysconfig import _POSIX_BUILD
 
 try:
     # this is only in Python3.8 and later
@@ -215,7 +216,7 @@ class Project:
     @property
     def virtualenv_exists(self) -> bool:
         if os.path.exists(self.virtualenv_location):
-            if os.name == "nt":
+            if os.name == "nt" and not _POSIX_BUILD:
                 extra = ["Scripts", "activate.bat"]
             else:
                 extra = ["bin", "activate"]
